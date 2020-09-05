@@ -10,6 +10,8 @@ class Database:
         """Initialize db class variables"""
         self.connection = sqlite3.connect(Database.DB_LOCATION)
         self.cur = self.connection.cursor()
+        self.table = 'Accounts'
+        self.create_table(self.table)
 
     def close(self):
         """Close database connection"""
@@ -36,7 +38,7 @@ class Database:
         INSERT INTO
           {name} (pin, id, first_name, last_name, balance)
         VALUES
-          ({pin}, {id}, {firstName}, {lastName}, {balance})
+          ({pin}, {id}, '{firstName}', '{lastName}', {balance});
         """.format(name=table_name, pin=acct_pin, id=member_id, firstName=mem_first_name, lastName=mem_last_name,
                    balance=mem_balance)
 
@@ -52,7 +54,7 @@ class Database:
         SET
           balance = {acct_balance}
         WHERE
-          id = {acct_id}
+          id = {acct_id};
         """.format(name=table_name, acct_balance=mem_balance, acct_id=mem_id)
 
         # execute query
@@ -60,3 +62,22 @@ class Database:
 
         # commit changes
         self.connection.commit()
+
+    def in_database(self, table_name, acct_pin):
+        data = self.get_acct_info
+
+        if not data:
+            return False  # data for pin not found
+        else:
+            return True  # data found
+
+    def get_acct_info(self, table_name, acct_pin):
+        select_query = """SELECT * FROM {table} WHERE pin = {pin};""".format(table=table_name, pin=acct_pin)
+
+        # execute query
+        self.cur.execute(select_query)
+
+        # get data from database
+        data = self.cur.fetchone()
+
+        return data
