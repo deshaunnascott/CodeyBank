@@ -1,13 +1,15 @@
 # CodeyBank
-Personal project to practice database and GUI development with Python. It is intended to mock the
-basic operations of a bank account owner.
+Personal project to practice database and GUI development with Python. This project is developed with the 
+Tkinter framework and Sqlite3 Database.
+ 
+This project is intended to mock the basic operations of a bank account owner.
 
 ## Table of Contents
 * [Current Feature](#CurrentFeatures)
-* [Dependencies](#Dependencies)
+* [Resources](#Resources)
 * [Setup](#LocalStep)
 * [Extra Information](#ExtraInformation)
-* [ToDo](#ToDo)
+* [Possible Future Developments](#PossibleFutureDev)
 
 ## CurrentFeatures
     * Withdrawal
@@ -17,23 +19,26 @@ basic operations of a bank account owner.
 These are the basic features I started with. I want to add more account features in the future
 such as Amount Transfer between account existing in the database
 
-## Dependencies
+## Resources
 
     random
     tkinter
+    sqlite
 
 ## LocalStep
 1) Navigate to your local CodeyBank project folder
 
-2) Run Main Driver File
+2) Create a folder named `Database` at the top level of your CodeyBank project folder
+
+3) Run Main Driver File
 
 		python CBPortal.py
 
 ## ExtraInformation
-Something to note about these accounts is that they currently allow for the user to overdrawn their account.
+Something to note about these accounts is that they currently allow for the user to overdraw their account.
 So it is possible for an account to have a negative balance.
 
-## ToDo
+## PossibleFutureDev
 * Add new account features (i.e. Amount Transfer)
 * Add more error checking
 * Add a sample database
