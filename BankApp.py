@@ -1,9 +1,14 @@
 # Author: ShaunCodes
 # Date:   September 4, 2020
 
+# GUI library
 import tkinter as tk
+from tkinter import messagebox
+
+# random number generator needed for new member IDs
 import random
 
+# import created classes
 from BankDatabase import Database
 from AccountClass import Account
 
@@ -32,13 +37,7 @@ class BankApp(tk.Tk):
         self.acct_info = ()
 
         self.create_frame(StartScene, container)
-        """
-        for F in (StartScene, MemberScene, CreateScene):
-            frame = F(container, self)
-            self.frames[F] = frame
-            frame.grid(row=0, column=0, sticky="nsew")
-        self.show_frame(StartScene)
-        """
+
     def show_frame(self, scene):
         frame = self.frames[scene]
         frame.tkraise()
@@ -54,6 +53,7 @@ class BankApp(tk.Tk):
 
     @staticmethod
     def popupmsg(text="Try again. If you're not a member, please create an account."):
+        """
         popup = tk.Tk()
         popup.wm_title("Invalid Info")
         label = tk.Label(popup, text=text, font=("Verdana", 10))
@@ -61,7 +61,9 @@ class BankApp(tk.Tk):
         b1 = tk.Button(popup, text="Okay", command=popup.destroy)
         b1.pack(padx=10, pady=10)
         popup.mainloop()
-
+        """
+        messagebox.showinfo("CBP", text)
+        return
 
 # create start scene frame
 class StartScene(tk.Frame):
@@ -132,6 +134,7 @@ class MemberScene(tk.Frame):
         self.label_heading = tk.Label(self, text="Account Options", font=("Verdana", 16, "bold"))
         self.label_heading.pack(padx=5, pady=5)
 
+        # create and pack the account option buttons
         self.button_withdrawal = tk.Button(self, text="Withdrawal",
                                            command=lambda: controller.create_frame(WithdrawalScene, parent))
         self.button_withdrawal.pack(padx=5, pady=5)
@@ -144,9 +147,15 @@ class MemberScene(tk.Frame):
                                              command=lambda: controller.create_frame(AccountScene, parent))
         self.button_acct_balance.pack(padx=5, pady=5)
 
+        # list account ID number of current account owner
         self.label_id = tk.Label(self, text="Acct ID: {id}".format(id=controller.acct_info[1]))
         self.label_id.pack(side=tk.LEFT, padx=5, pady=5)
 
+        self.button_exit = tk.Button(master=self, text="exit",
+                                     command=lambda: controller.create_frame(ExitScene, parent))
+        self.button_exit.pack(side=tk.RIGHT, padx=5, pady=5)
+
+        # list name of current account owner
         self.label_member = tk.Label(self, text="Member: {fname} {lname}".format(fname=controller.acct_info[2],
                                                                                  lname=controller.acct_info[3]))
         self.label_member.pack(side=tk.RIGHT, padx=5, pady=5)
@@ -174,6 +183,7 @@ class CreateScene(tk.Frame):
         self.label_mem_id_num = tk.Label(master=self.form_frame,
                                          text="{id}".format(id=self.mem_id))
 
+        # create new account form
         self.label_mem_id.grid(row=0, column=0, sticky="ew")
         self.label_mem_id_num.grid(row=0, column=1, sticky="ew")
 
@@ -206,6 +216,7 @@ class CreateScene(tk.Frame):
 
     @staticmethod
     def get_new_mem_id(controller):
+        # assign a member id
         mem_id = random.randint(1000, 9999)
 
         # check for id in account database
@@ -220,14 +231,18 @@ class CreateScene(tk.Frame):
         return mem_id
 
     def create_new_account(self, controller):
-        first_name = self.ent_first_name.get()
-        last_name = self.ent_last_name.get()
-        pin = self.ent_pin.get().strip
+        # get input information
+        first_name = self.ent_first_name.get().strip()
+        last_name = self.ent_last_name.get().strip()
+        pin = self.ent_pin.get().strip()
 
+        # create new account object
         new_account = Account(int(pin), self.mem_id, first_name, last_name)
         controller.database.add_new_acct(controller.database.table, new_account)
 
-        # Go back to home page
+        controller.popupmsg(text="New Account Created")
+
+        # Go back to login page
         controller.show_frame(StartScene)
 
 # create withdrawal scene frame
@@ -238,6 +253,7 @@ class WithdrawalScene(tk.Frame):
         self.label_heading = tk.Label(self, text="Codey Bank Withdrawal", font=("Verdana", 16, "bold"))
         self.label_heading.pack(padx=5, pady=5)
 
+        # create GUI elements for amount withdrawal
         self.info_frame = tk.Frame(self)
         self.info_frame.pack(fill=tk.BOTH, padx=5, pady=5)
 
@@ -252,7 +268,7 @@ class WithdrawalScene(tk.Frame):
         self.button_frame.pack(fill=tk.BOTH, ipadx=5, ipady=5)
 
         self.button_enter = tk.Button(master=self.button_frame, text="Submit",
-                                      command=lambda: self.update_member_account(controller))
+                                      command=lambda: self.update_member_account(controller, parent))
         self.button_enter.pack(side=tk.RIGHT, padx=10, ipadx=10)
 
         self.button_clear = tk.Button(master=self.button_frame, text="Clear", command=lambda: self.clear_entry())
@@ -269,16 +285,26 @@ class WithdrawalScene(tk.Frame):
     def clear_entry(self):
         self.entry_withdrawal.delete(0, 'end')
 
-    def update_member_account(self, controller):
+    def update_member_account(self, controller, parent):
         if controller.acct_info[4] == 0.0:
             controller.popupmsg(text="Cannot process. Account balance is 0.0")
             self.clear_entry()
             return
 
+        # withdrawal requested amount
         withdrawal_amt = self.entry_withdrawal.get().strip()
         new_amt = controller.acct_info[4] - float(withdrawal_amt)
 
         controller.database.update_balance(controller.database.table, controller.acct_info[1], new_amt)
+
+        # get updated information
+        controller.acct_info = controller.database.get_acct_info(controller.database.table, 'id',
+                                                                 int(controller.acct_info[1]))
+
+        controller.popupmsg(text="Account Balance Updated")
+
+        # update and go back to account options
+        controller.create_frame(MemberScene, parent)
 
 # create deposit scene frame
 class DepositScene(tk.Frame):
@@ -288,6 +314,7 @@ class DepositScene(tk.Frame):
         self.label_heading = tk.Label(self, text="Codey Bank Deposit", font=("Verdana", 16, "bold"))
         self.label_heading.pack(padx=5, pady=5)
 
+        # create GUI elements for amount deposit
         self.info_frame = tk.Frame(self)
         self.info_frame.pack(fill=tk.BOTH, padx=5, pady=5)
 
@@ -302,7 +329,7 @@ class DepositScene(tk.Frame):
         self.button_frame.pack(fill=tk.BOTH, ipadx=5, ipady=5)
 
         self.button_enter = tk.Button(master=self.button_frame, text="Submit",
-                                      command=lambda: self.update_member_account(controller))
+                                      command=lambda: self.update_member_account(controller, parent))
         self.button_enter.pack(side=tk.RIGHT, padx=10, ipadx=10)
 
         self.button_clear = tk.Button(master=self.button_frame, text="Clear", command=lambda: self.clear_entry())
@@ -319,13 +346,23 @@ class DepositScene(tk.Frame):
     def clear_entry(self):
         self.entry_withdrawal.delete(0, 'end')
 
-    def update_member_account(self, controller):
+    def update_member_account(self, controller, parent):
+        # deposit requested amount
         deposit_amt = self.entry_withdrawal.get().strip()
         new_amt = controller.acct_info[4] + float(deposit_amt)
 
         controller.database.update_balance(controller.database.table, controller.acct_info[1], new_amt)
 
-# create account scene frame
+        # get updated information
+        controller.acct_info = controller.database.get_acct_info(controller.database.table, 'id',
+                                                                 int(controller.acct_info[1]))
+
+        controller.popupmsg(text="Account Balance Updated")
+
+        # update and go back to account options
+        controller.create_frame(MemberScene, parent)
+
+# create account details scene frame
 class AccountScene(tk.Frame):
 
     def __init__(self, parent, controller):
@@ -333,6 +370,7 @@ class AccountScene(tk.Frame):
         self.label_heading = tk.Label(self, text="Account Details", font=("Verdana", 16, "bold"))
         self.label_heading.pack(padx=5, pady=5)
 
+        # create frame for current account owner information
         self.info_frame = tk.Frame(self)
         self.info_frame.pack(fill=tk.BOTH, padx=5, pady=5)
 
@@ -349,6 +387,7 @@ class AccountScene(tk.Frame):
                                                                          lname=controller.acct_info[3]))
         self.label_name.pack(fill=tk.BOTH, pady=5)
 
+        # create back button to return to account options page
         self.button_frame = tk.Frame(self)
         self.button_frame.pack(fill=tk.BOTH, padx=5, pady=5)
 
@@ -356,21 +395,18 @@ class AccountScene(tk.Frame):
                                      command=lambda: controller.create_frame(MemberScene, parent))
         self.button_back.pack(side=tk.RIGHT, padx=10, ipadx=10)
 
-# TODO: Update
 # create exit scene frame
 class ExitScene(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
-        label = tk.Label(self, text="Exit Page!!!", font=("Verdana", 16, "bold"))
-        label.pack(pady=10, padx=10)
+        self.label_heading = tk.Label(self, text="Thank You For Using", font=("Verdana", 16, "bold"))
+        self.label_heading.pack(padx=5, pady=5)
 
-        button1 = tk.Button(self, text="Back to Home",
-                            command=lambda: controller.show_frame(StartScene))
-        button1.pack()
+        self.label_heading = tk.Label(self, text="Codey Bank Portal", font=("Verdana", 16, "bold"))
+        self.label_heading.pack(padx=5, pady=5)
 
-        button2 = tk.Button(self, text="Page Two",
-                            command=lambda: controller.show_frame(PageTwo))
-        button2.pack()
-app = BankApp()
-app.mainloop()
+        # create exit button to destroy GUI application
+        self.button_EXIT = tk.Button(master=self, text="EXIT",
+                                     command=controller.destroy)
+        self.button_EXIT.pack()
