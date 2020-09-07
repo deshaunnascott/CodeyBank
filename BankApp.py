@@ -325,22 +325,36 @@ class DepositScene(tk.Frame):
 
         controller.database.update_balance(controller.database.table, controller.acct_info[1], new_amt)
 
-# TODO: Update
 # create account scene frame
 class AccountScene(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
-        label = tk.Label(self, text="Account Details Page!!!", font=("Verdana", 16, "bold"))
-        label.pack(pady=10, padx=10)
+        self.label_heading = tk.Label(self, text="Account Details", font=("Verdana", 16, "bold"))
+        self.label_heading.pack(padx=5, pady=5)
 
-        button1 = tk.Button(self, text="Back to Home",
-                            command=lambda: controller.show_frame(StartScene))
-        button1.pack()
+        self.info_frame = tk.Frame(self)
+        self.info_frame.pack(fill=tk.BOTH, padx=5, pady=5)
 
-        button2 = tk.Button(self, text="Page Two",
-                            command=lambda: controller.show_frame(PageTwo))
-        button2.pack()
+        self.label_balance = tk.Label(master=self.info_frame,
+                                      text="Balance: {balance}".format(balance=controller.acct_info[4]))
+        self.label_balance.pack(fill=tk.BOTH, pady=5)
+
+        self.label_id = tk.Label(master=self.info_frame,
+                                 text="Account ID: {id}".format(id=controller.acct_info[1]))
+        self.label_id.pack(fill=tk.BOTH, pady=5)
+
+        self.label_name = tk.Label(master=self.info_frame,
+                                   text="Member: {fname} {lname}".format(fname=controller.acct_info[2],
+                                                                         lname=controller.acct_info[3]))
+        self.label_name.pack(fill=tk.BOTH, pady=5)
+
+        self.button_frame = tk.Frame(self)
+        self.button_frame.pack(fill=tk.BOTH, padx=5, pady=5)
+
+        self.button_back = tk.Button(master=self.button_frame, text="Back",
+                                     command=lambda: controller.create_frame(MemberScene, parent))
+        self.button_back.pack(side=tk.RIGHT, padx=10, ipadx=10)
 
 # TODO: Update
 # create exit scene frame
