@@ -30,7 +30,7 @@ such as Amount Transfer between account existing in the database
 		python CBPortal.py
 
 ## ExtraInformation
-Something to note about these accounts is that they current allow for the user to overdrawn their account.
+Something to note about these accounts is that they currently allow for the user to overdrawn their account.
 So it is possible for an account to have a negative balance.
 
 ## ToDo
