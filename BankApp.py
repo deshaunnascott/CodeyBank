@@ -277,11 +277,6 @@ class WithdrawalScene(tk.Frame):
         self.entry_withdrawal.delete(0, 'end')
 
     def update_member_account(self, controller, parent):
-        if controller.acct_info[4] == 0.0:
-            controller.popupmsg(text="Cannot process. Account balance is 0.0")
-            self.clear_entry()
-            return
-
         # withdrawal requested amount
         withdrawal_amt = self.entry_withdrawal.get().strip()
         new_amt = controller.acct_info[4] - float(withdrawal_amt)
@@ -291,8 +286,10 @@ class WithdrawalScene(tk.Frame):
         # get updated information
         controller.acct_info = controller.database.get_acct_info(controller.database.table, 'id',
                                                                  int(controller.acct_info[1]))
-
-        controller.popupmsg(text="Account Balance Updated")
+        if new_amt < float(0):
+            controller.popupmsg(text="Account Balance Updated. But Account is Overdrawn")
+        else:
+            controller.popupmsg(text="Account Balance Updated")
 
         # update and go back to account options
         controller.create_frame(MemberScene, parent)

@@ -3,12 +3,13 @@ Personal project to practice database and GUI development with Python. It is int
 basic operations of a bank account owner.
 
 ## Table of Contents
-* [Current Feature](#Current Features)
+* [Current Feature](#CurrentFeatures)
 * [Dependencies](#Dependencies)
 * [Setup](#LocalStep)
+* [Extra Information](#ExtraInformation)
 * [ToDo](#ToDo)
 
-## Current Features
+## CurrentFeatures
     * Withdrawal
     * Deposit
     * View Account Details
@@ -27,6 +28,10 @@ such as Amount Transfer between account existing in the database
 2) Run Main Driver File
 
 		python CBPortal.py
+
+## ExtraInformation
+Something to note about these accounts is that they current allow for the user to overdrawn their account.
+So it is possible for an account to have a negative balance.
 
 ## ToDo
 * Add new account features (i.e. Amount Transfer)
