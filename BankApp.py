@@ -398,3 +398,8 @@ class ExitScene(tk.Frame):
         self.button_EXIT = tk.Button(master=self, text="EXIT",
                                      command=controller.destroy)
         self.button_EXIT.pack()
+
+# main driver for the CodeyBank Portal
+def main():
+    app = BankApp()
+    app.mainloop()
