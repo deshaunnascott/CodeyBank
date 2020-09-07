@@ -1,6 +1,7 @@
 # Author: ShaunCodes
 # Date:   September 4, 2020
 
+# database library for account database
 import sqlite3
 
 class Database:

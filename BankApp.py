@@ -53,15 +53,6 @@ class BankApp(tk.Tk):
 
     @staticmethod
     def popupmsg(text="Try again. If you're not a member, please create an account."):
-        """
-        popup = tk.Tk()
-        popup.wm_title("Invalid Info")
-        label = tk.Label(popup, text=text, font=("Verdana", 10))
-        label.pack(side="top", fill="x", padx=10, pady=10)
-        b1 = tk.Button(popup, text="Okay", command=popup.destroy)
-        b1.pack(padx=10, pady=10)
-        popup.mainloop()
-        """
         messagebox.showinfo("CBP", text)
         return
 
