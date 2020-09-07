@@ -21,8 +21,8 @@ class Database:
     def create_table(self, tablename):
         create_acct_table = """
         CREATE TABLE IF NOT EXISTS {name} (
-          pin INTEGER PRIMARY KEY AUTOINCREMENT,
-          id INTEGER,
+          pin INTEGER,
+          id INTEGER  PRIMARY KEY,
           first_name TEXT NOT NULL,
           last_name TEXT NOT NULL,
           balance FLOAT
@@ -33,14 +33,14 @@ class Database:
         # commit changes
         self.connection.commit()
 
-    def add_new_acct(self, table_name, acct_pin, member_id, mem_first_name, mem_last_name, mem_balance):
+    def add_new_acct(self, table_name, acctObj):
         insert_query = """
         INSERT INTO
           {name} (pin, id, first_name, last_name, balance)
         VALUES
           ({pin}, {id}, '{firstName}', '{lastName}', {balance});
-        """.format(name=table_name, pin=acct_pin, id=member_id, firstName=mem_first_name, lastName=mem_last_name,
-                   balance=mem_balance)
+        """.format(name=table_name, pin=acctObj.acct_pin, id=acctObj.member_id, firstName=acctObj.mem_first_name,
+                   lastName=acctObj.mem_last_name, balance=acctObj.mem_balance)
 
         # execute query
         self.cur.execute(insert_query)
@@ -63,17 +63,33 @@ class Database:
         # commit changes
         self.connection.commit()
 
-    def in_database(self, table_name, acct_pin):
-        data = self.get_acct_info
+    def member_exists(self, table_name, pin_info, id_info):
+        select_query = """SELECT * FROM {table} 
+        WHERE pin = {pin}
+        AND id = {id};""".format(table=table_name, pin=pin_info, id=id_info)
+
+        # execute query
+        self.cur.execute(select_query)
+
+        # get data from database
+        data = self.cur.fetchone()
+
+        if not data:
+            return False  # data for member not found
+        else:
+            return True  # data found
+
+    def in_database(self, table_name, table_column, get_info):
+        data = self.get_acct_info(table_name, table_column, get_info)
 
         if not data:
             return False  # data for pin not found
         else:
             return True  # data found
 
-    def get_acct_info(self, table_name, acct_pin):
-        select_query = """SELECT * FROM {table} WHERE pin = {pin};""".format(table=table_name, pin=acct_pin)
-
+    def get_acct_info(self, table_name, table_column, get_info):
+        select_query = """SELECT * FROM {table} WHERE {column} = {info};""".format(table=table_name,
+                                                                                   column=table_column, info=get_info)
         # execute query
         self.cur.execute(select_query)
 
