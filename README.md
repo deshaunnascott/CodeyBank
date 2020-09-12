@@ -15,6 +15,7 @@ This project is intended to mock the basic operations of a bank account owner.
     * Withdrawal
     * Deposit
     * View Account Details
+    * Account Creation
 
 These are the basic features I started with. I want to add more account features in the future
 such as Amount Transfer between account existing in the database
@@ -40,6 +41,5 @@ So it is possible for an account to have a negative balance.
 
 ## Possible_Future_Dev
 * Add new account features (i.e. Amount Transfer)
-* Add more error checking
 * Add a sample database
 * Create a CodeyBank Manager Portal for access to total bank database

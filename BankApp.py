@@ -447,7 +447,7 @@ class ExitScene(tk.Frame):
 
         self.label_heading = tk.Label(self, text="Codey Bank Portal", font=("Verdana", 16, "bold"))
         self.label_heading.pack(padx=5, pady=5)
-                
+
         # create exit button to destroy GUI application
         self.button_EXIT = tk.Button(master=self, text="EXIT",
                                      command=controller.destroy)
