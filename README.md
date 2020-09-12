@@ -29,9 +29,7 @@ such as Amount Transfer between account existing in the database
 ## Local_Setup
 1) Navigate to your local CodeyBank project folder
 
-2) Create a folder named `Database` at the top level of your CodeyBank project folder
-
-3) Run Main Driver File
+2) Run Main Driver File
 
 		python CBPortal.py
 
