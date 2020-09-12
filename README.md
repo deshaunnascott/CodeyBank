@@ -7,7 +7,7 @@ This project is intended to mock the basic operations of a bank account owner.
 ## Table of Contents
 * [Current Features](#Current_Features)
 * [Resources](#Resources)
-* [Setup](#Local_Step)
+* [Setup](#Local_Setup)
 * [Extra Information](#Extra_Information)
 * [Possible Future Developments](#Possible_Future_Dev)
 
