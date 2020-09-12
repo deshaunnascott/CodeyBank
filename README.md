@@ -7,7 +7,7 @@ This project is intended to mock the basic operations of a bank account owner.
 ## Table of Contents
 * [Current Features](#Current_Features)
 * [Resources](#Resources)
-* [Setup](#LocalStep)
+* [Setup](#Local_Step)
 * [Extra Information](#Extra_Information)
 * [Possible Future Developments](#Possible_Future_Dev)
 
@@ -26,7 +26,7 @@ such as Amount Transfer between account existing in the database
     tkinter
     sqlite
 
-## LocalStep
+## Local_Setup
 1) Navigate to your local CodeyBank project folder
 
 2) Create a folder named `Database` at the top level of your CodeyBank project folder
