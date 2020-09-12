@@ -107,6 +107,18 @@ class StartScene(tk.Frame):
         acct_id = self.entry_acct_id.get().strip()
         pin = self.entry_pin.get().strip()
 
+        # validity check (empty widget)
+        if len(acct_id) == 0 or len(pin) == 0:
+            self.clear_entry()
+            controller.popupmsg("Invalid Entry. Try Again.")
+            return
+
+        # validity check (non-numeric entries)
+        if not acct_id.isnumeric() or not pin.isnumeric():
+            self.clear_entry()
+            controller.popupmsg("Invalid Entry. Try Again.")
+            return
+
         # check for pin in account database
         exists = controller.database.member_exists(controller.database.table, int(pin), int(acct_id))
 
@@ -227,6 +239,22 @@ class CreateScene(tk.Frame):
         last_name = self.ent_last_name.get().strip()
         pin = self.ent_pin.get().strip()
 
+        # validity check (empty widget)
+        if len(first_name) == 0 or len(last_name) == 0 or len(pin) == 0:
+            self.ent_first_name.delete(0, 'end')
+            self.ent_last_name.delete(0, 'end')
+            self.ent_pin.delete(0, 'end')
+            controller.popupmsg("Invalid Entry. No Empty Widgets")
+            return
+
+        # validity check (non-alpha or non-numeric entries)
+        if not first_name.isalpha() or not last_name.isalpha() or not pin.isnumeric():
+            self.ent_first_name.delete(0, 'end')
+            self.ent_last_name.delete(0, 'end')
+            self.ent_pin.delete(0, 'end')
+            controller.popupmsg("Invalid Entry:\n First and Last Name must only contain letters\n Pin must be numeric")
+            return
+
         # create new account object
         new_account = Account(int(pin), self.mem_id, first_name, last_name)
         controller.database.add_new_acct(controller.database.table, new_account)
@@ -279,6 +307,19 @@ class WithdrawalScene(tk.Frame):
     def update_member_account(self, controller, parent):
         # withdrawal requested amount
         withdrawal_amt = self.entry_withdrawal.get().strip()
+
+        # validity check (empty widget)
+        if len(withdrawal_amt) == 0:
+            self.clear_entry()
+            controller.popupmsg("Invalid Entry. No Empty Amount")
+            return
+
+        # validity check (non-numeric entries)
+        if not withdrawal_amt.isnumeric():
+            self.clear_entry()
+            controller.popupmsg("Invalid Entry. Amount must be numeric")
+            return
+
         new_amt = controller.acct_info[4] - float(withdrawal_amt)
 
         controller.database.update_balance(controller.database.table, controller.acct_info[1], new_amt)
@@ -337,6 +378,19 @@ class DepositScene(tk.Frame):
     def update_member_account(self, controller, parent):
         # deposit requested amount
         deposit_amt = self.entry_withdrawal.get().strip()
+
+        # validity check (empty widget)
+        if len(deposit_amt) == 0:
+            self.clear_entry()
+            controller.popupmsg("Invalid Entry. No Empty Amount")
+            return
+
+        # validity check (non-numeric entries)
+        if not deposit_amt.isnumeric():
+            self.clear_entry()
+            controller.popupmsg("Invalid Entry. Amount must be numeric")
+            return
+
         new_amt = controller.acct_info[4] + float(deposit_amt)
 
         controller.database.update_balance(controller.database.table, controller.acct_info[1], new_amt)
@@ -393,7 +447,7 @@ class ExitScene(tk.Frame):
 
         self.label_heading = tk.Label(self, text="Codey Bank Portal", font=("Verdana", 16, "bold"))
         self.label_heading.pack(padx=5, pady=5)
-
+                
         # create exit button to destroy GUI application
         self.button_EXIT = tk.Button(master=self, text="EXIT",
                                      command=controller.destroy)
