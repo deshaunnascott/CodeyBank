@@ -7,17 +7,17 @@ import os
 
 class Database:
     # Create database folder if it doesn't exist
-    if not os.path.exists('Database'):
-        os.makedirs('Database')
+    if not os.path.exists('./Database'):
+        os.makedirs('./Database')
 
     # database location
-    DB_LOCATION = './Database/acct_db.sqlite'
+    DB_LOCATION = './Database/mem_db.sqlite'
 
-    def __init__(self):
+    def __init__(self, table_name="Members"):
         """Initialize db class variables"""
         self.connection = sqlite3.connect(Database.DB_LOCATION)
         self.cur = self.connection.cursor()
-        self.table = 'Accounts'
+        self.table = table_name
         self.create_table(self.table)
 
     def close(self):

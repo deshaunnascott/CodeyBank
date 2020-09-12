@@ -9,7 +9,7 @@ from tkinter import messagebox
 import random
 
 # import created classes
-from BankDatabase import Database
+from MemDatabase import Database
 from AccountClass import Account
 
 class BankApp(tk.Tk):
