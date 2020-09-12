@@ -5,6 +5,7 @@
 import sqlite3
 
 class Database:
+    # database location
     DB_LOCATION = './Database/acct_db.sqlite'
 
     def __init__(self):
@@ -64,6 +65,7 @@ class Database:
         # commit changes
         self.connection.commit()
 
+    # function to check for member with id and pin at login
     def member_exists(self, table_name, pin_info, id_info):
         select_query = """SELECT * FROM {table} 
         WHERE pin = {pin}
@@ -80,14 +82,16 @@ class Database:
         else:
             return True  # data found
 
+    # search function for one column at a time
     def in_database(self, table_name, table_column, get_info):
         data = self.get_acct_info(table_name, table_column, get_info)
 
         if not data:
-            return False  # data for pin not found
+            return False  # data for column not found
         else:
             return True  # data found
 
+    # find account and return the information found
     def get_acct_info(self, table_name, table_column, get_info):
         select_query = """SELECT * FROM {table} WHERE {column} = {info};""".format(table=table_name,
                                                                                    column=table_column, info=get_info)

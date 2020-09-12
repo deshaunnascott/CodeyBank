@@ -84,7 +84,7 @@ class StartScene(tk.Frame):
         self.button_frame = tk.Frame(self)
         self.button_frame.pack(fill=tk.BOTH, ipadx=5, ipady=5)
 
-        self.button_enter = tk.Button(master=self.button_frame, text="Enter",
+        self.button_enter = tk.Button(master=self.button_frame, text="Login",
                                       command=lambda: self.verify_acct(parent, controller))
         self.button_enter.pack(side=tk.RIGHT, padx=10, ipadx=10)
 

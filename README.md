@@ -5,13 +5,13 @@ Tkinter framework and Sqlite3 Database.
 This project is intended to mock the basic operations of a bank account owner.
 
 ## Table of Contents
-* [Current Feature](#CurrentFeatures)
+* [Current Features](#Current Features)
 * [Resources](#Resources)
 * [Setup](#LocalStep)
-* [Extra Information](#ExtraInformation)
-* [Possible Future Developments](#PossibleFutureDev)
+* [Extra Information](#Extra Information)
+* [Possible Future Developments](#Possible Future Dev)
 
-## CurrentFeatures
+## Current Features
     * Withdrawal
     * Deposit
     * View Account Details
@@ -34,11 +34,12 @@ such as Amount Transfer between account existing in the database
 
 		python CBPortal.py
 
-## ExtraInformation
+## Extra Information
 Something to note about these accounts is that they currently allow for the user to overdraw their account.
 So it is possible for an account to have a negative balance.
 
-## PossibleFutureDev
+## Possible Future Dev
 * Add new account features (i.e. Amount Transfer)
 * Add more error checking
 * Add a sample database
+* Create a CodeyBank Manager Portal for access to total bank database

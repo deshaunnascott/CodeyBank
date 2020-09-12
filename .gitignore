@@ -2,4 +2,7 @@
 *.pyc
 *.sqlite
 *.spec
+*.svg
 build
+dist
+FutureDev.txt
