@@ -124,6 +124,8 @@ class StartScene(tk.Frame):
 
         # check for member pin in database
         if exists:
+            # clear the entry widgets
+            self.clear_entry()
             controller.acct_info = controller.database.get_acct_info(controller.database.table, 'id', int(acct_id))
             controller.create_frame(MemberScene, parent)
         else:
@@ -448,10 +450,18 @@ class ExitScene(tk.Frame):
         self.label_heading = tk.Label(self, text="Codey Bank Portal", font=("Verdana", 16, "bold"))
         self.label_heading.pack(padx=5, pady=5)
 
+        self.button_frame = tk.Frame(self)
+        self.button_frame.pack(fill=tk.BOTH, padx=5, pady=5)
+
+        # create return to login button
+        self.button_RETURN = tk.Button(master=self.button_frame, text="Return to Login",
+                                       command=lambda: controller.show_frame(StartScene))
+        self.button_RETURN.pack(side=tk.TOP)
+
         # create exit button to destroy GUI application
-        self.button_EXIT = tk.Button(master=self, text="EXIT",
+        self.button_EXIT = tk.Button(master=self.button_frame, text="EXIT",
                                      command=controller.destroy)
-        self.button_EXIT.pack()
+        self.button_EXIT.pack(side=tk.BOTTOM, pady=5)
 
 # main driver for the CodeyBank Portal
 def main():
