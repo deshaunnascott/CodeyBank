@@ -3,8 +3,13 @@
 
 # database library for account database
 import sqlite3
+import os
 
 class Database:
+    # Create database folder if it doesn't exist
+    if not os.path.exists('Database'):
+        os.makedirs('Database')
+
     # database location
     DB_LOCATION = './Database/acct_db.sqlite'
 
